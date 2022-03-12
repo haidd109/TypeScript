@@ -19,5 +19,5 @@ sum(a, b);
  * baseUrl: "./src"
  * outDir: "./dist"
  * sourceMap: true
-*/ 
+*/
 //# sourceMappingURL=app.js.map

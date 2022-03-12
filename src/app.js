@@ -19,4 +19,4 @@ sum(a, b);
  * baseUrl: "./src"
  * outDir: "./dist"
  * sourceMap: true
-*/ 
+*/
