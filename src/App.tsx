@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
 import './App.css'
 import ShowInfo from './components/ShowInfo'
@@ -8,6 +8,15 @@ import WebsiteLayout from './pages/layouts/WebsiteLayout'
 import ProductPage from './pages/Product'
 
 function App() {
+  const [products, setProducts] = useState([]);
+  useEffect(() =>{
+    const getProducts = async () => {
+      const response = await fetch('http://localhost:8000/api/products/');
+      const data = await response.json();
+      setProducts(data);
+    }
+    getProducts();
+  }, []);
   return (
     <div className="container">
       <Routes>
