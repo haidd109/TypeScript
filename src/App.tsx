@@ -7,7 +7,7 @@ import AdminLayout from './pages/layouts/AdminLayout'
 import ProductDetail from './pages/ProductDetail'
 import ProductManager from './pages/ProductManager';
 import { ProductType } from './pages/types/product'
-import { list } from './api/product'
+import { list, remove} from './api/product'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -22,6 +22,11 @@ function App() {
       }
       getProducts();
   }, [])
+
+  const removeItem = (id) => {
+    remove(id);
+    setProducts(products.filter(item => item.id !== id))
+  }
   
   return (
 
@@ -43,7 +48,7 @@ function App() {
           <Route path="admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" />} />
               <Route path="dashboard" element={<h1>Dashboard page</h1>} />
-              <Route path="product" element={<ProductManager products={products} />} />
+              <Route path="product" element={<ProductManager products={products} onRemove={removeItem} />} />
           </Route>
         </Routes>
     </div>
