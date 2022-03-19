@@ -1,45 +1,53 @@
-import { useState, useEffect } from 'react'
-import { Navigate, NavLink, Route, Routes } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import './App.css'
-import ShowInfo from './components/ShowInfo'
-import HomePage from './pages/HomePage'
-import AdminLayout from './pages/layouts/AdminLayout'
+import { Navigate, NavLink, Route, Router, Routes } from 'react-router-dom'
+import Homepage from './pages/Homepage'
 import WebsiteLayout from './pages/layouts/WebsiteLayout'
-import ProductPage from './pages/Product'
+import AdminLayout from './pages/layouts/AdminLayout'
+import ProductDetail from './pages/ProductDetail'
+import ProductManager from './pages/ProductManager';
+import { ProductType } from './pages/types/product'
+import { list } from './api/product'
 
 function App() {
-  const [products, setProducts] = useState([]);
-  useEffect(() =>{
-    const getProducts = async () => {
-      const response = await fetch('http://localhost:8000/api/products/');
-      const data = await response.json();
-      setProducts(data);
-    }
-    getProducts();
-  }, []);
+  const [count, setCount] = useState(0);
+  const [status, setStatus] = useState(false);
+
+  const [products, setProducts] = useState<ProductType[]>([]);
+
+  useEffect(() => {
+      const getProducts = async () => {
+            const { data } = await list();
+            setProducts(data);
+      }
+      getProducts();
+  }, [])
+  
   return (
+
     <div className="container">
-      <Routes>
-        <Route path='/' element={<WebsiteLayout/>}>
-          <Route index element={<HomePage/>}/>
-          <Route path='product' element={<h1>Product Page</h1>}/>
-        </Route>
-        <Route path='admin' element={<AdminLayout/>}>
-          <Route index element={<Navigate to="dashboard" />}/>
-          <Route path='dashboard' element={<h1>Dashboard Page</h1>}/>
-        </Route>
-      </Routes>
+      {count} <button onClick={() => setCount(count + 1)}>Click</button>
+      <button onClick={() => setStatus(true)}>Click</button>
+      <div>
+        {products.map(item => item.name)}
+      </div>
+        <Routes>
+          <Route path="/" element={<WebsiteLayout />}>
+              <Route index element={<Homepage />} />
+              <Route path="product">
+                <Route index element={<h1>Product Page</h1>} />
+                <Route path=":id" element={<ProductDetail />} />
+              </Route>
+              
+          </Route>
+          <Route path="admin" element={<AdminLayout />}>
+              <Route index element={<Navigate to="dashboard" />} />
+              <Route path="dashboard" element={<h1>Dashboard page</h1>} />
+              <Route path="product" element={<ProductManager products={products} />} />
+          </Route>
+        </Routes>
     </div>
   )
 }
 
 export default App
-
-/**
- * B1: npm i react-router-dom
- * B2: wrapper các ứng dụng sử dụng react-router-dom:
- *  - Truy cập file main.tsx :
- *    + import { BrowserRouter } from 'react-router-dom';
- *    + <BrowserRouter><App /></BrowserRouter>
- * B3: Sử dụng Component Routes, Route, NavLink
- */
