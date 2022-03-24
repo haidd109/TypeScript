@@ -7,7 +7,9 @@ import AdminLayout from './pages/layouts/AdminLayout'
 import ProductDetail from './pages/ProductDetail'
 import ProductManager from './pages/ProductManager';
 import { ProductType } from './pages/types/product'
-import { list, remove} from './api/product'
+import { add, list, remove } from './api/product'
+import ProductAdd from './pages/ProductAdd'
+import ProductEdit from './pages/ProductEdit'
 
 function App() {
   const [count, setCount] = useState(0);
@@ -24,10 +26,18 @@ function App() {
   }, [])
 
   const removeItem = (id) => {
+    
     remove(id);
-    setProducts(products.filter(item => item.id !== id))
+    // reRender
+    setProducts(products.filter(item => item.id !== id));
+
+
+    // setProduct()
   }
-  
+  const onHanldeAdd = (data) => {
+      add(data);
+      setProducts([...products, data])
+  }
   return (
 
     <div className="container">
@@ -48,7 +58,12 @@ function App() {
           <Route path="admin" element={<AdminLayout />}>
               <Route index element={<Navigate to="dashboard" />} />
               <Route path="dashboard" element={<h1>Dashboard page</h1>} />
-              <Route path="product" element={<ProductManager products={products} onRemove={removeItem} />} />
+              <Route path="product">
+                <Route index element={<ProductManager products={products} onRemove={removeItem}/>} />
+                <Route path="add" element={<ProductAdd onAdd={onHanldeAdd}/>} />
+                <Route path=":id/edit" element={<ProductEdit />}/>
+              </Route>
+              
           </Route>
         </Routes>
     </div>
