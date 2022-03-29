@@ -1,34 +1,36 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams} from 'react-router-dom';
 import { read } from '../api/product';
+import { ProductType } from './types/product';
 
-type ProductEditProps = {}
+type ProductEditProps = {
+    onUpdate: (product: ProductType) => void
+}
 type FormInputs = {
     name: string,
     price: number
 }
-
-const productEdit = (props: ProductEditProps) => {
-    const {register, handleSubmit, formState: {errors}} = useForm<FormInputs>();
+const ProductEdit = (props: ProductEditProps) => {
+    const { register, handleSubmit, formState: {errors}, reset} = useForm<FormInputs>();
     const navigate = useNavigate();
     const { id } = useParams();
 
-   useEffect(() => {
+    useEffect(() => {
         const getProduct = async () => {
             const { data } = await read(+id);
-            console.log(data);
+            reset(data)
         }
         getProduct();
     }, [])
 
     const onSubmit: SubmitHandler<FormInputs> = data => {
-        console.log(data);
-        //navigate('/admin/product')
+        props.onUpdate(data);
+        navigate('/admin/product')
     }
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
-        <input type="text" {...register('name', {required: true})} />
+        <input type="text" {...register('name', { required: true})} />
         { errors.name && <span>Fields is required</span>}
         <input type="number" {...register('price')} />
         <button>Update</button>
@@ -36,4 +38,4 @@ const productEdit = (props: ProductEditProps) => {
   )
 }
 
-export default productEdit
+export default ProductEdit
