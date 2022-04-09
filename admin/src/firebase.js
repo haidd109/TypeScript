@@ -5,12 +5,13 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCB-h_T2ZL-a7xt5zMvZmSh8GBXtawzL0c",
-  authDomain: "shop-889c6.firebaseapp.com",
-  projectId: "shop-889c6",
-  storageBucket: "shop-889c6.appspot.com",
-  messagingSenderId: "105110075028",
-  appId: "1:105110075028:web:7cee5adf1ed39f597e6681",
+  apiKey: "AIzaSyDLHJTecuLj6sGhp0YYciTfgU1tSO5vAJQ",
+  authDomain: "ass-redux.firebaseapp.com",
+  projectId: "ass-redux",
+  storageBucket: "ass-redux.appspot.com",
+  messagingSenderId: "44129770496",
+  appId: "1:44129770496:web:4fa5a6dd5005dfbd508ce5",
+  measurementId: "G-14P0VKGK6Q"
 };
 
 // Initialize Firebase
